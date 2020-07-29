@@ -69,6 +69,13 @@ static void update_dt(void)
 		return;
 	}
 
+#if 0
+	if (add_optee_dt_node(fdt)) {
+		ERROR("Failed to add optee in Device Tree\n");
+		return;
+	}
+#endif
+
 	ret = fdt_pack(fdt);
 	if (ret < 0)
 		ERROR("Failed to pack Device Tree at %p: error %d\n", fdt, ret);

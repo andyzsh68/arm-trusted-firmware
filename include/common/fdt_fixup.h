@@ -9,6 +9,7 @@
 
 int dt_add_psci_node(void *fdt);
 int dt_add_psci_cpu_enable_methods(void *fdt);
+int add_optee_dt_node(void *fdt);
 int fdt_add_reserved_memory(void *dtb, const char *node_name,
 			    uintptr_t base, size_t size);
 

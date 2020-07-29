@@ -162,6 +162,41 @@ int dt_add_psci_cpu_enable_methods(void *fdt)
 	return ret;
 }
 
+int add_optee_dt_node(void *fdt)
+{
+	int offs;
+	int ret;
+
+	if (fdt_path_offset(fdt, "/firmware/optee") >= 0) {
+		WARN("OP-TEE Device Tree node already exists!\n");
+		return 0;
+	}
+
+	offs = fdt_path_offset(fdt, "/firmware");
+	if (offs < 0) {
+		/* add subnode */
+		offs = fdt_path_offset(fdt, "/");
+		if (offs < 0)
+			return -1;
+		offs = fdt_add_subnode(fdt, offs, "firmware");
+		if (offs < 0)
+			return -1;
+	}
+
+	offs = fdt_add_subnode(fdt, offs, "optee");
+	if (offs < 0)
+		return -1;
+
+	ret = fdt_setprop_string(fdt, offs, "compatible",
+				 "linaro,optee-tz");
+	if (ret < 0)
+		return -1;
+	ret = fdt_setprop_string(fdt, offs, "method", "smc");
+	if (ret < 0)
+		return -1;
+	return 0;
+}
+
 #define HIGH_BITS(x) ((sizeof(x) > 4) ? ((x) >> 32) : (typeof(x))0)
 
 /*******************************************************************************
